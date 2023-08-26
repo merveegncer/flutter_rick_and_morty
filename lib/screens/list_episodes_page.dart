@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:rick_and_morty/widgets/card_episode.dart';
 
 import '../models/episode_model.dart';
 
@@ -48,7 +49,7 @@ class _GetAndShowEpisodesState extends State<GetAndShowEpisodes> {
             return ListView.builder(
               itemCount: episodelist.length,
               itemBuilder: (context, index) {
-                return Text(episodelist[index].name);
+                return EpisodeCard(thisEpisode: episodelist[index]);
               },
             );
           },

@@ -40,7 +40,7 @@ class _GetAndShowCharacterState extends State<GetAndShowCharacters> {
           _nextPageUrl = data['info']['next'] ??
               "https://rickandmortyapi.com/api/character/?page=42";
           _previousPageUrl = data['info']['prev'] ??
-              '"https://rickandmortyapi.com/api/character/?page=1"';
+              "https://rickandmortyapi.com/api/character/?page=1";
         });
         debugPrint(url);
       } else {
@@ -137,7 +137,7 @@ class _GetAndShowCharacterState extends State<GetAndShowCharacters> {
     return FutureBuilder<List<CharacterModel>>(
       future: Future.value(_characterList),
       builder: (context, snapshot) {
-        var characterList = snapshot.data!;
+        var characterList = snapshot.data ?? [];
         return GridView.builder(
           itemCount: characterList.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

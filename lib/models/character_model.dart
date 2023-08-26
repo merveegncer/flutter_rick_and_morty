@@ -1,8 +1,11 @@
 import 'dart:ui';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'dart:convert';
+
+import 'package:rick_and_morty/models/episode_model.dart';
 
 class CharacterModel {
   final int id;
