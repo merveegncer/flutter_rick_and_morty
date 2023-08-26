@@ -12,9 +12,14 @@ class GetAndShowCharacters extends StatefulWidget {
 }
 
 class _GetAndShowCharacterState extends State<GetAndShowCharacters> {
+  TextEditingController textEditingController = TextEditingController();
+
   final Dio _dio = Dio();
   String _nextPageUrl = "https://rickandmortyapi.com/api/character/?page=1";
   String _previousPageUrl = "https://rickandmortyapi.com/api/character/?page=1";
+  String _url = "https://rickandmortyapi.com/api/character/";
+  String _filterName = "";
+  String _filteredUrl = "";
 
   var gridcount = 2;
 
@@ -58,7 +63,17 @@ class _GetAndShowCharacterState extends State<GetAndShowCharacters> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Text(' Characters'),
+        title: TextField(
+          controller: textEditingController,
+          onSubmitted: (value) {
+            setState(
+              () {
+                _filterName = _url + "?name=${textEditingController.text}";
+              },
+            );
+            _getCharacters(_filterName);
+          },
+        ),
         actions: [
           ElevatedButton(
             style: const ButtonStyle(
@@ -74,31 +89,65 @@ class _GetAndShowCharacterState extends State<GetAndShowCharacters> {
           ),
         ],
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-                opacity: 0,
-                fit: BoxFit.cover,
-                image: NetworkImage(
-                    'https://i.pinimg.com/736x/a6/66/0a/a6660a73483be1692daf7d44aafc21d3.jpg'))),
-        child: Center(
-          child: FutureBuilder<List<CharacterModel>>(
-            future: Future.value(_characterList),
-            builder: (context, snapshot) {
-              var characterList = snapshot.data!;
-              return GridView.builder(
-                itemCount: characterList.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2),
-                itemBuilder: (context, index) {
-                  var this_character = characterList[index];
-                  return CharacterCard(character: this_character);
-                },
-              );
-            },
+      body: SafeArea(
+        child: Container(
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                  opacity: 0,
+                  fit: BoxFit.cover,
+                  image: NetworkImage(
+                      'https://i.pinimg.com/736x/a6/66/0a/a6660a73483be1692daf7d44aafc21d3.jpg'))),
+          child: Container(
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    TextButton(
+                        onPressed: () {
+                          setState(() {
+                            _filteredUrl = _filterName + "&status=alive";
+                          });
+                          _getCharacters(_filteredUrl);
+                        },
+                        child: Text("alive")),
+                    TextButton(
+                        onPressed: () {
+                          setState(() {
+                            _filteredUrl = _filterName + "&status=dead";
+                          });
+                          _getCharacters(_filteredUrl);
+                        },
+                        child: Text("dead")),
+                  ],
+                ),
+                Expanded(
+                  child: Center(
+                    child: characterFutureList(),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  FutureBuilder<List<CharacterModel>> characterFutureList() {
+    return FutureBuilder<List<CharacterModel>>(
+      future: Future.value(_characterList),
+      builder: (context, snapshot) {
+        var characterList = snapshot.data!;
+        return GridView.builder(
+          itemCount: characterList.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2),
+          itemBuilder: (context, index) {
+            var this_character = characterList[index];
+            return CharacterCard(character: this_character);
+          },
+        );
+      },
     );
   }
 }

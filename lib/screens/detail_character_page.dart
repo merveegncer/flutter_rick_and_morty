@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty/models/character_model.dart';
 import 'package:rick_and_morty/widgets/green_text.dart';
+import 'package:expandable/expandable.dart';
 
 class DetailPage extends StatefulWidget {
   final CharacterModel theCharacter;
@@ -83,7 +84,7 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                                 offset: Offset(3, 2))
                           ]),
                     ),
-                    const SizedBox(width: 100),
+                    Expanded(child: SizedBox(width: 100)),
                     Container(
                         alignment: Alignment.topCenter,
                         child: Row(
@@ -192,60 +193,58 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
           color: Color.fromARGB(149, 140, 181, 221)),
       height: 550,
       width: 410,
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  child: Container(
-                      margin: const EdgeInsets.fromLTRB(10, 0, 0, 20),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                      margin: EdgeInsets.fromLTRB(10, 0, 0, 20),
                       height: 50,
                       alignment: Alignment.centerLeft,
                       child: GreenText(
                         text: _character.name,
                         size: 40.0,
                       )),
-                ),
-                Container(
-                  width: 118,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  alignment: Alignment.topRight,
-                  child: Chip(
-                      avatar: const Icon(
-                        Icons.female,
-                        size: 22,
-                      ),
-                      side: const BorderSide(
-                          color: Color.fromARGB(60, 0, 0, 0), width: 2),
-                      label: Text(_character.gender.name,
-                          style: const TextStyle(
-                              fontSize: 12,
-                              color: Color.fromARGB(255, 253, 227, 255),
-                              shadows: [
-                                Shadow(
-                                    blurRadius: 6,
-                                    color: Color.fromARGB(125, 0, 0, 0),
-                                    offset: Offset(2, 2)),
-                                Shadow(
-                                    blurRadius: 6,
-                                    color: Color.fromARGB(121, 0, 0, 0),
-                                    offset: Offset(1, 3))
-                              ])),
-                      backgroundColor:
-                          (_character.gender.name.toString() == 'MALE')
-                              ? Colors.blue
-                              : const Color.fromARGB(255, 216, 11, 117)),
-                ),
-              ],
+                  Container(
+                    width: 118,
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    alignment: Alignment.topRight,
+                    child: Chip(
+                        avatar: const Icon(
+                          Icons.female,
+                          size: 22,
+                        ),
+                        side: BorderSide(
+                            color: Color.fromARGB(60, 0, 0, 0), width: 2),
+                        label: Text(_character.gender.name,
+                            style: const TextStyle(
+                                fontSize: 12,
+                                color: Color.fromARGB(255, 253, 227, 255),
+                                shadows: [
+                                  Shadow(
+                                      blurRadius: 6,
+                                      color: Color.fromARGB(125, 0, 0, 0),
+                                      offset: Offset(2, 2)),
+                                  Shadow(
+                                      blurRadius: 6,
+                                      color: Color.fromARGB(121, 0, 0, 0),
+                                      offset: Offset(1, 3))
+                                ])),
+                        backgroundColor:
+                            (_character.gender.name.toString() == 'MALE')
+                                ? Colors.blue
+                                : const Color.fromARGB(255, 216, 11, 117)),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: liste(),
-          )
-        ],
+            expansionwidget(_character),
+          ],
+        ),
       ),
     );
   }
@@ -327,5 +326,26 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  ExpansionTile expansionwidget(CharacterModel character) {
+    return ExpansionTile(
+      title: Text('Header'),
+      children: [
+        getepisodes(character),
+      ],
+    );
+  }
+
+  ListView getepisodes(CharacterModel character) {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics:
+          NeverScrollableScrollPhysics(), // Bu, içerideki ListView'ın kaydırma işlevini devre dışı bırakır
+      itemCount: character.episode.length,
+      itemBuilder: (context, index) {
+        return Center(child: ListTile(title: Text(character.episode[index])));
+      },
+    );
   }
 }

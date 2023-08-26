@@ -23,21 +23,20 @@ class CharacterModel {
     return _genderColor;
   }
 
-  CharacterModel(
-      {required this.id,
-      required this.name,
-      required this.status,
-      required this.species,
-      required this.type,
-      required this.gender,
-      required this.origin,
-      required this.location,
-      required this.image,
-      required this.episode,
-      required this.url,
-      required this.created,
-      Color? genderColor})
-      : _genderColor = genderColor;
+  CharacterModel({
+    required this.id,
+    required this.name,
+    required this.status,
+    required this.species,
+    required this.type,
+    required this.gender,
+    required this.origin,
+    required this.location,
+    required this.image,
+    required this.episode,
+    required this.url,
+    required this.created,
+  });
 
   factory CharacterModel.fromJson(String str) {
     if (str == null) {
