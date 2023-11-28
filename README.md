@@ -1,16 +1,3 @@
 # rick_and_morty
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<src= 'https://cdn.discordapp.com/attachments/826375565984137266/1179162391800455248/Screenshot_1701203880.png?ex=6578c78d&is=6566528d&hm=9f249c545515d76d0a2012605457a60d698237cbc7c57c0997fb79e4c556a882&'>
